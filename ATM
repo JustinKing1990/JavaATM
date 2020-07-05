@@ -1,0 +1,249 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package menu.test;
+
+/**
+ *
+ * @author kingjust
+ */
+import javafx.application.Application;
+import javafx.event.*;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
+public class ButtonExperiments extends Application  {
+
+private int[] accountNumber = {100, 100, 100, 100, 100,
+    100, 100, 100, 100, 100};
+public int balancePos = 20;
+public int balanceNeg = 20;
+int countnumber = 1;
+int withdraw = 0;
+int deposit = 0;
+String withdrawBlah;
+String depositBlah;
+public String count;
+Scene scene, scene1, scene2, scene3, scene4;
+Stage stage;
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+      stage = primaryStage;
+      count = String.valueOf(countnumber);
+      
+        primaryStage.setTitle("ATM");
+        //Initializes the user of gridpane, and constructor for Balance object
+        GridPane gridpane = new GridPane();
+        Balance balance1 = new Balance();
+
+        //Creates all of the diffrent labels, buttons, variables, et al.
+        Label label = new Label(count);
+        Label label1 = new Label("Current ID Number: ");
+        Button button1 = new Button("+");
+        Button button2 = new Button("- ");
+        Button okayButton = new Button("Continue");
+        Button cancelButton = new Button("Exit");
+        Button returnButton = new Button("Exit");
+        Button depositButton = new Button("Deposit");
+        Button withdrawButton = new Button("Withdraw");
+        Label blahText = new Label("Amount of withdrawal?");
+        Label depositText = new Label("Amount to deposit?");
+        Button withdrawNeg = new Button("+ ");
+        Button depositPos = new Button("+ ");
+        Button completeButton = new Button ("Enter");
+        Button completeButton1 = new Button ("Enter");
+        GridPane withdrawPane = new GridPane();
+        GridPane gridpane2 = new GridPane();
+        GridPane gridpane3 = new GridPane();
+        GridPane depositPane = new GridPane();
+        Label accountText = new Label("The current account balance is :");
+        accountNumber[countnumber - 1] = 100;
+        String balanceText = String.valueOf(accountNumber[countnumber - 1]);
+        Label accountBalance = new Label(balanceText);
+        String withdrawText = String.valueOf(0);
+        Label withdrawAmount = new Label(withdrawText);
+        String depositTemp = String.valueOf(0);
+        Label depositAmount = new Label(depositTemp);
+        String balanceTemp = String.valueOf(accountNumber[countnumber -1]);
+        Label errorMessage = new Label("Amount withdrawn will exceed balance");
+        
+        
+        
+        
+        
+        
+                
+        //Creates the default scene to select the account ID
+        gridpane.add(button1, 15, 5, 2, 2);
+        gridpane.add(button2, 15, 7, 2, 2);
+        gridpane.add(label1, 3, 0, 1, 1);
+        gridpane.add(label, 4, 0, 1, 1);
+        gridpane.add(okayButton, 3, 19, 1, 1);
+        gridpane.add(cancelButton, 4, 19, 1, 1);
+        gridpane.setAlignment(Pos.CENTER);
+        scene = new Scene(gridpane, 200, 100);
+        
+        //Creates the scene used for withdrawal
+        withdrawPane.add(blahText, 0 ,0 ,1 ,1);
+        withdrawPane.add(withdrawNeg, 15, 4, 1, 1);
+        withdrawPane.add(withdrawAmount, 0, 10, 1, 1);
+        withdrawPane.add(completeButton, 0, 15, 1, 1);
+        withdrawPane.setAlignment(Pos.CENTER);
+        scene2 = new Scene(withdrawPane, 200, 100);
+        
+        //Creates the scene that provides user options, as well as, displays current account balance
+        gridpane3.add(accountText, 0, 0 ,1 ,1);
+        gridpane3.add(accountBalance, 0, 3, 3, 1);
+        gridpane2.add(depositButton, 0, 4, 1, 1);
+        gridpane2.add(withdrawButton, 1, 4, 1, 1);
+        gridpane2.add(returnButton, 2, 4, 1, 1);
+        gridpane2.add(gridpane3, 0 ,0 ,1 ,1);
+        scene1 = new Scene(gridpane2, 300, 65);
+        
+        depositPane.add(depositText, 0, 0, 1, 1);
+        depositPane.add(depositPos, 15, 4, 1, 1);
+        depositPane.add(depositAmount, 0, 10, 1, 1);
+        depositPane.add(completeButton1, 0, 15, 1, 1);
+        depositPane.setAlignment(Pos.CENTER);
+        scene4 = new Scene(depositPane);
+       
+        button1.setOnAction((ActionEvent value) -> {
+            countnumber ++;
+            if (countnumber > 10){
+                countnumber = 10;
+            }
+             count = String.valueOf(countnumber);
+            label.setText(count);
+            String balanceText2 = String.valueOf(accountNumber[countnumber -1]);
+            accountBalance.setText(balanceText2);
+        });
+        
+        button2.setOnAction((ActionEvent value) -> {
+            countnumber --;
+            if (countnumber < 1){
+                countnumber = 1;
+            }
+            count = String.valueOf(countnumber);
+            label.setText(count);
+            String balanceText2 = String.valueOf(accountNumber[countnumber -1]);
+        accountBalance.setText(balanceText2);
+        });
+        cancelButton.setOnAction(e -> System.exit(0));
+           
+        
+        okayButton.setOnAction(e -> {
+            primaryStage.setScene(scene1);
+            primaryStage.show(); 
+        });
+            withdrawButton.setOnAction(e -> {
+              primaryStage.setScene(scene2);
+              primaryStage.show();
+            });
+               withdrawNeg.setOnAction((ActionEvent val) -> {
+                  
+                  //assigns a value to specific ID number based on the amount withdrawn
+                  accountNumber[countnumber - 1] = (balance1.Withdraw());
+                  if (accountNumber[countnumber -1] < 0){
+                      accountNumber[countnumber -1] = 0;
+                      primaryStage.setScene(scene1);
+                      primaryStage.show();
+                      gridpane2.add(errorMessage, 0, 0, 1, 1);
+                      gridpane3.getChildren().remove(accountText);
+                      gridpane3.getChildren().remove(accountBalance);
+                  }
+                  //assigns a numerical value to a string
+                  String balanceText1 = String.valueOf(accountNumber[countnumber - 1]);
+                  //rewrites a previous label to equal the new number
+                  accountBalance.setText(balanceText1);
+                  //assigns a numberical value to a string to demonstrate amount to withdraw
+                  withdrawBlah = String.valueOf(withdraw += 20);
+                  //rewrites a previous string to equal the new number
+                  withdrawAmount.setText(withdrawBlah);
+                });
+               
+               depositButton.setOnAction(e -> primaryStage.setScene(scene4));
+               
+               depositPos.setOnAction(e -> {
+                  accountNumber[countnumber -1] = balance1.Deposit();
+                  String balanceText1 = String.valueOf(accountNumber[countnumber -1]);
+                  accountBalance.setText(balanceText1);
+                  depositBlah = String.valueOf(deposit += 20);
+                  depositAmount.setText(depositBlah);
+               });
+               completeButton1.setOnAction(e -> {
+                   primaryStage.setScene(scene1);
+                   deposit = 0;
+                   primaryStage.show();
+                   depositAmount.setText("0");
+                       });
+               completeButton.setOnAction(e -> {
+                   primaryStage.setScene(scene1);
+                   withdraw = 0;
+                   primaryStage.show();
+                   withdrawAmount.setText("0");
+                       });
+               returnButton.setOnAction(e -> primaryStage.setScene(scene));
+                  
+            
+        
+
+
+
+        
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        }
+    
+
+
+    
+    public static void main(String[] args) {
+        Application.launch(args);
+        
+    }
+
+}
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package menu.test;
+
+/**
+ *
+ * @author justi
+ */
+class Balance {
+    private static int balance = 100;
+    public int Withdraw;
+    
+    Balance(){
+        balance = 100;
+    }
+    
+    Balance(int withdrawNeg){
+        balance = withdrawNeg;
+        
+    }
+    
+    int Withdraw(){
+        return this.balance -= 20;
+    }
+    int getBalance(){
+        return this.balance;
+    }
+    
+    int Deposit(){
+        return this.balance += 20;
+    }
+ 
+}
